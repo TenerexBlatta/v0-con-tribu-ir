@@ -11,7 +11,7 @@ export function MissionSection() {
             <span className="font-semibold text-primary text-lg">Nuestra Misión</span>
           </div>
           <h2 className="text-4xl lg:text-6xl font-bold tracking-tight text-balance bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-            Transformando Vidas
+            Transformar Vidas
           </h2>
           <p className="text-xl lg:text-2xl text-muted-foreground text-pretty max-w-4xl mx-auto leading-relaxed">
             A través de la educación innovadora y el desarrollo integral
