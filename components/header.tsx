@@ -41,9 +41,6 @@ export function Header() {
                 <Button variant="ghost" size="sm" className="flex items-center gap-2">
                   <User className="h-4 w-4" />
                   {profile?.full_name || user.email}
-                  {profile?.role === "admin" && (
-                    <span className="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full">Admin</span>
-                  )}
                   {profile?.role === "mentor" && (
                     <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">Mentor</span>
                   )}
@@ -93,9 +90,6 @@ export function Header() {
                 <>
                   <div className="text-sm font-medium">
                     {profile?.full_name || user.email}
-                    {profile?.role === "admin" && (
-                      <span className="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full ml-2">Admin</span>
-                    )}
                     {profile?.role === "mentor" && (
                       <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full ml-2">Mentor</span>
                     )}

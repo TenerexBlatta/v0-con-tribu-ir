@@ -35,7 +35,9 @@ export default function RegisterPage() {
     }
 
     try {
-      const { error } = await supabase.auth.signUp({
+      console.log("[v0] Starting registration process", { email, fullName, role })
+
+      const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -46,10 +48,31 @@ export default function RegisterPage() {
           },
         },
       })
-      if (error) throw error
+
+      console.log("[v0] Registration response", { data, error })
+
+      if (error) {
+        console.log("[v0] Registration error", error)
+        throw error
+      }
+
+      console.log("[v0] Registration successful, redirecting to success page")
       router.push("/auth/success")
     } catch (error: unknown) {
-      setError(error instanceof Error ? error.message : "An error occurred")
+      console.log("[v0] Caught error during registration", error)
+      if (error instanceof Error) {
+        if (error.message.includes("duplicate key")) {
+          setError("Ya existe una cuenta con este email")
+        } else if (error.message.includes("invalid email")) {
+          setError("El formato del email no es válido")
+        } else if (error.message.includes("weak password")) {
+          setError("La contraseña debe tener al menos 6 caracteres")
+        } else {
+          setError(error.message)
+        }
+      } else {
+        setError("Error al crear la cuenta. Por favor intenta de nuevo.")
+      }
     } finally {
       setIsLoading(false)
     }
@@ -107,6 +130,7 @@ export default function RegisterPage() {
                 id="password"
                 type="password"
                 required
+                minLength={6}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
