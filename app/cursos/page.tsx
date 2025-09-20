@@ -1,12 +1,17 @@
+"use client"
+
 import { CoursesHeader } from "@/components/courses-header"
 import { CoursesFilters } from "@/components/courses-filters"
 import { CoursesGrid } from "@/components/courses-grid"
 import { CreateCourseButton } from "@/components/create-course-button"
+import { useState } from "react"
 
 export default function CoursesPage() {
+  const [searchQuery, setSearchQuery] = useState("")
+
   return (
     <div className="min-h-screen bg-background">
-      <CoursesHeader />
+      <CoursesHeader onSearchChange={setSearchQuery} />
       <main className="container mx-auto px-4 py-8">
         <div className="flex flex-col lg:flex-row gap-8">
           <aside className="lg:w-64 flex-shrink-0">
@@ -20,7 +25,7 @@ export default function CoursesPage() {
               </div>
               <CreateCourseButton />
             </div>
-            <CoursesGrid />
+            <CoursesGrid searchQuery={searchQuery} />
           </div>
         </div>
       </main>

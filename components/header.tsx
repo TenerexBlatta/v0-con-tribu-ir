@@ -19,6 +19,9 @@ export function Header() {
         </Link>
 
         <nav className="hidden md:flex items-center space-x-6">
+          <Link href="/" className="text-sm font-medium hover:text-primary transition-colors">
+            Inicio
+          </Link>
           <Link href="/cursos" className="text-sm font-medium hover:text-primary transition-colors">
             Cursos
           </Link>
@@ -54,6 +57,9 @@ export function Header() {
       {isMenuOpen && (
         <div className="md:hidden border-t bg-background">
           <nav className="flex flex-col space-y-4 p-4">
+            <Link href="/" className="text-sm font-medium hover:text-primary transition-colors">
+              Inicio
+            </Link>
             <Link href="/cursos" className="text-sm font-medium hover:text-primary transition-colors">
               Cursos
             </Link>
