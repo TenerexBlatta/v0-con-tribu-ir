@@ -1,12 +1,12 @@
 "use client"
 import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
-import { useAdmin } from "@/contexts/admin-context"
+import { useAuth } from "@/contexts/auth-context"
 
 export function CreateCourseButton() {
-  const { userRole } = useAdmin()
+  const { profile } = useAuth()
 
-  if (userRole !== "mentor" && userRole !== "admin") {
+  if (!profile || (profile.role !== "mentor" && profile.role !== "admin")) {
     return null
   }
 

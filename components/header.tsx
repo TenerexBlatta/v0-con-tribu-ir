@@ -1,14 +1,15 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { Menu, X, Shield } from "lucide-react"
+import { Menu, X, LogOut, User } from "lucide-react"
 import { useState } from "react"
 import Link from "next/link"
-import { useAdmin } from "@/contexts/admin-context"
+import { useAuth } from "@/contexts/auth-context"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const { isAdmin, setIsAdmin } = useAdmin()
+  const { user, profile, signOut } = useAuth()
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -34,19 +35,37 @@ export function Header() {
         </nav>
 
         <div className="hidden md:flex items-center space-x-4">
-          <Button
-            variant={isAdmin ? "default" : "outline"}
-            size="sm"
-            onClick={() => setIsAdmin(!isAdmin)}
-            className="flex items-center gap-2"
-          >
-            <Shield className="h-4 w-4" />
-            {isAdmin ? "Admin ON" : "Admin OFF"}
-          </Button>
-          <Button variant="ghost" size="sm">
-            Iniciar Sesión
-          </Button>
-          <Button size="sm">Registrarse</Button>
+          {user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="flex items-center gap-2">
+                  <User className="h-4 w-4" />
+                  {profile?.full_name || user.email}
+                  {profile?.role === "admin" && (
+                    <span className="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full">Admin</span>
+                  )}
+                  {profile?.role === "mentor" && (
+                    <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">Mentor</span>
+                  )}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={signOut}>
+                  <LogOut className="h-4 w-4 mr-2" />
+                  Cerrar Sesión
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <>
+              <Button variant="ghost" size="sm" asChild>
+                <Link href="/auth/login">Iniciar Sesión</Link>
+              </Button>
+              <Button size="sm" asChild>
+                <Link href="/auth/register">Registrarse</Link>
+              </Button>
+            </>
+          )}
         </div>
 
         <button className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
@@ -70,19 +89,32 @@ export function Header() {
               Contacto
             </a>
             <div className="flex flex-col space-y-2 pt-4 border-t">
-              <Button
-                variant={isAdmin ? "default" : "outline"}
-                size="sm"
-                onClick={() => setIsAdmin(!isAdmin)}
-                className="flex items-center gap-2"
-              >
-                <Shield className="h-4 w-4" />
-                {isAdmin ? "Admin ON" : "Admin OFF"}
-              </Button>
-              <Button variant="ghost" size="sm">
-                Iniciar Sesión
-              </Button>
-              <Button size="sm">Registrarse</Button>
+              {user ? (
+                <>
+                  <div className="text-sm font-medium">
+                    {profile?.full_name || user.email}
+                    {profile?.role === "admin" && (
+                      <span className="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full ml-2">Admin</span>
+                    )}
+                    {profile?.role === "mentor" && (
+                      <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full ml-2">Mentor</span>
+                    )}
+                  </div>
+                  <Button variant="ghost" size="sm" onClick={signOut}>
+                    <LogOut className="h-4 w-4 mr-2" />
+                    Cerrar Sesión
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button variant="ghost" size="sm" asChild>
+                    <Link href="/auth/login">Iniciar Sesión</Link>
+                  </Button>
+                  <Button size="sm" asChild>
+                    <Link href="/auth/register">Registrarse</Link>
+                  </Button>
+                </>
+              )}
             </div>
           </nav>
         </div>
