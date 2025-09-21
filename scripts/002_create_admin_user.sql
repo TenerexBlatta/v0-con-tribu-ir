@@ -1,3 +1,4 @@
+-- Fixed to use profiles table instead of users table
 -- Create the admin user account
 -- Email: admin@contribuir.org
 -- Password: ConTribuIr2024!
@@ -14,7 +15,7 @@ security definer
 set search_path = public
 as $$
 begin
-  insert into public.users (id, email, full_name, role)
+  insert into public.profiles (id, email, full_name, role)
   values (
     new.id,
     new.email,
@@ -23,7 +24,8 @@ begin
       when new.email = 'admin@contribuir.org' then 'admin'
       else coalesce(new.raw_user_meta_data ->> 'role', 'user')
     end
-  );
+  )
+  on conflict (id) do nothing;
   return new;
 end;
 $$;
